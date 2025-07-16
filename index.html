@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selfie in Tea Garden</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 20px;
+        }
+        video {
+            border: 2px solid #333;
+            width: 80%;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #e64a19;
+        }
+        #selfie-result {
+            display: none;
+            margin-top: 20px;
+            border: 2px solid #333;
+            width: 80%;
+            border-radius: 10px;
+        }
+        #tea-garden {
+            width: 100%;
+            height: 100%;
+            background-image: url('https://via.placeholder.com/800x400.png?text=Tea+Garden'); /* Placeholder tea garden */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        #selfie-in-tea-garden {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Take Your Selfie in a Tea Garden!</h1>
+    <p>Click the button below to take a selfie and enjoy it in a magical tea garden!</p>
+
+    <video id="video" width="80%" height="auto" autoplay></video>
+    <br>
+    <button id="captureButton">Capture Selfie</button>
+
+    <div id="selfie-result">
+        <h2>Your Selfie in the Tea Garden</h2>
+        <div id="tea-garden">
+            <img id="selfie-in-tea-garden" src="" alt="Selfie in Tea Garden">
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const captureButton = document.getElementById('captureButton');
+        const selfieResult = document.getElementById('selfie-result');
+        const selfieImage = document.getElementById('selfie-in-tea-garden');
+
+        // Start the webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((err) => {
+                console.log("Error accessing webcam:", err);
+            });
+
+        // Capture the selfie
+        captureButton.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageDataUrl = canvas.toDataURL();
+            selfieImage.src = imageDataUrl;
+            selfieResult.style.display = 'block'; // Show the selfie result in tea garden
+        });
+    </script>
+</body>
+</html>
